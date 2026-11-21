@@ -74,14 +74,6 @@ export class PruebaAgnes implements AfterViewInit {
     });
   }
 
-  // Herramienta rápida: volcar un bloque de 5 letras en una columna de la cuadrícula
-  colocarBloqueEnColumna(bloque: string, colIndex: number): void {
-    const letras = bloque.split('');
-    for (let fila = 0; fila < 5; fila++) {
-      this.grid[fila][colIndex] = letras[fila] || '';
-    }
-  }
-
   limpiarCuadricula(): void {
     this.grid = Array.from({ length: 5 }, () => Array(5).fill(''));
   }

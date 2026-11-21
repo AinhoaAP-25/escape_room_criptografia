@@ -85,7 +85,7 @@
       </div>
 
       <p class="helper-tip">
-        Puedes escribir directamente en las casillas o pulsar los botones de ayuda bajo cada columna para volcar un bloque.
+        Escribe directamente cada letra en las casillas de la cuadrícula para reorganizar las columnas.
       </p>
 
       <!-- Cuadrícula 5x5 -->
@@ -106,21 +106,6 @@
             (input)="onCellInput(f, c, $event)"
             aria-label="Celda de matriz"
           />
-        </div>
-
-        <!-- Botones rápidos para insertar bloques de 5 letras en columnas -->
-        <div class="quick-fill">
-          <span>Volcar bloque en columna:</span>
-          <div class="quick-buttons" *ngFor="let b of bloquesCifrados">
-            <strong class="block-tag">{{ b }} &rarr;</strong>
-            <button 
-              *ngFor="let num of ordenColumnas; let cIdx = index" 
-              class="mini-btn"
-              title="Colocar {{ b }} en la columna con orden {{ num }}"
-              (click)="colocarBloqueEnColumna(b, cIdx)">
-              Ord. {{ num }}
-            </button>
-          </div>
         </div>
       </div>
 

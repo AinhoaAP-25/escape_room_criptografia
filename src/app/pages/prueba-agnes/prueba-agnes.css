@@ -287,44 +287,6 @@
   background: #262520;
 }
 
-/* Botones de volcado rápido */
-.quick-fill {
-  width: 100%;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid #2e2c26;
-  font-size: 0.8rem;
-  color: #a3a8a5;
-}
-
-.quick-buttons {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  margin-top: 0.4rem;
-}
-
-.block-tag {
-  color: #c5a059;
-  min-width: 72px;
-}
-
-.mini-btn {
-  background: #232421;
-  border: 1px solid #3d3a32;
-  color: #d6d3c9;
-  padding: 0.2rem 0.45rem;
-  font-size: 0.75rem;
-  cursor: pointer;
-  font-family: 'Courier Prime', monospace;
-}
-
-.mini-btn:hover {
-  border-color: #c5a059;
-  color: #c5a059;
-}
-
 /* Validación */
 .answer-box {
   margin-top: 1.5rem;
