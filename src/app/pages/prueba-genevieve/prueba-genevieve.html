@@ -1,1 +1,158 @@
-<p>prueba-genevieve works!</p>
+<main class="page-container">
+  <div class="tactical-grid"></div>
+  <div class="vignette"></div>
+
+  <!-- Barra superior -->
+  <header class="top-bar">
+    <span class="badge-mission">ARCHIVO 03 // GENEVIEVE GROTJAN FEINSTEIN</span>
+    <span class="progress-indicator">PRUEBA 3 DE 5</span>
+  </header>
+
+  <!-- FASE 1: CONTEXTO HISTÓRICO -->
+  <section *ngIf="fase === 'intro'" class="content-wrapper">
+    <article class="dossier-card anim-in">
+      <div class="stamp">DESCLASIFICADO</div>
+      <span class="dossier-tag">PERFIL DE CRIPTOANALISTA // SALA DIPLOMÁTICA PURPLE</span>
+      <h1>GENEVIEVE GROTJAN</h1>
+
+      <div class="bio-text">
+        <p>
+          <strong>Genevieve Grotjan Feinstein</strong> fue la matemática y criptoanalista estadounidense 
+          responsable del hallazgo decisivo que permitió romper la máquina diplomática japonesa de máxima seguridad, 
+          conocida por los aliados como <strong>PURPLE</strong>.
+        </p>
+        <p>
+          La tarde del <strong>20 de septiembre de 1940</strong>, tras meses comparando a mano miles de cadenas de 
+          texto cifrado, detectó correlaciones periódicas que demostraron el comportamiento cíclico de sus 
+          interruptores, permitiendo reconstruir una réplica de la máquina sin haberla visto jamás.
+        </p>
+        <div class="highlight-box">
+          <strong>TU MISIÓN:</strong> Inspirándonos en su dominio del razonamiento matemático y las estructuras 
+          modulares, deberás invertir un <strong>Cifrado Afín</strong> para revelar dónde se oculta la siguiente clave.
+        </div>
+      </div>
+
+      <div class="actions-right">
+        <button class="btn-gold" (click)="pasarAlReto()">
+          DESCIFRAR SU CÓDIGO &rarr;
+        </button>
+      </div>
+    </article>
+  </section>
+
+  <!-- FASE 2: EL RETO + CALCULADORA MODULAR INTERACTIVA -->
+  <section *ngIf="fase === 'reto'" class="puzzle-layout">
+    
+    <!-- Columna Izquierda: Enunciado y Pistas -->
+    <div class="panel-info reto-anim">
+      <h2>CIFRADO AFÍN (ARITMÉTICA MODULAR)</h2>
+      <p class="instruction">
+        El mensaje se ha cifrado aplicando la función lineal con claves <strong>a = 7</strong> y <strong>b = 3</strong>
+      </p>
+
+      <div class="formula-box">
+        C(x) = (7x + 3) mod 26 &nbsp;&rarr;&nbsp; D(y) = a⁻¹(y &minus; 3) mod 26
+      </div>
+
+      <div class="intercepted-box">
+        <span class="label">MENSAJE INTERCEPTADO:</span>
+        <div class="cipher-text">{{ mensajeCifrado }}</div>
+        <p class="math-clue">
+          Para descifrarlo, calcula primero el <strong>inverso multiplicativo de 7 módulo 26</strong> (a⁻¹) 
+          y aplica la función inversa D(y) a cada letra.
+        </p>
+      </div>
+
+      <!-- Sistema de 3 pistas -->
+      <div class="hints-section">
+        <button 
+          class="btn-outline" 
+          (click)="pedirPista()" 
+          [disabled]="pistasDesbloqueadas >= pistas.length">
+          {{ pistasDesbloqueadas < pistas.length ? 'SOLICITAR PISTA (' + pistasDesbloqueadas + '/3)' : 'TODAS LAS PISTAS DESBLOQUEADAS' }}
+        </button>
+
+        <ul class="hints-list" *ngIf="pistasDesbloqueadas > 0">
+          <li *ngFor="let p of pistas.slice(0, pistasDesbloqueadas)">{{ p }}</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Columna Derecha: Herramienta Modular y Validación -->
+    <div class="panel-interactive reto-anim">
+      <h3>LABORATORIO MODULAR (MÓDULO 26)</h3>
+      
+      <!-- Tabla de equivalencias A=0 ... Z=25 -->
+      <div class="alphabet-grid">
+        <div class="alpha-cell" *ngFor="let letra of alfabeto; let i = index">
+          <span class="l-char">{{ letra }}</span>
+          <span class="l-num">{{ i }}</span>
+        </div>
+      </div>
+
+      <!-- Comprobador interactivo de inverso y descifrado por letra -->
+      <div class="modular-tools">
+        <div class="tool-card">
+          <span class="tool-title">1. BUSCADOR DE INVERSO (7 &middot; a⁻¹ &equiv; 1 mod 26)</span>
+          <div class="tool-row">
+            <label for="invInput">Probar valor a⁻¹:</label>
+            <input 
+              id="invInput"
+              type="number" 
+              min="1" 
+              max="25" 
+              [(ngModel)]="inversoProbado" 
+              class="num-input"
+            />
+            <span class="mod-result" [class.valid]="esInversoValido">
+              (7 &times; {{ inversoProbado }}) mod 26 = <strong>{{ productoModular }}</strong>
+              {{ esInversoValido ? '✓ ¡INVERSO HALLADO!' : '' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="tool-card">
+          <span class="tool-title">2. PROBADOR DE FUNCIÓN INVERSA D(y)</span>
+          <div class="tool-row">
+            <label for="letraSel">Letra cifrada (y):</label>
+            <select id="letraSel" [(ngModel)]="letraSeleccionada" class="num-select">
+              <option *ngFor="let l of alfabeto; let idx = index" [ngValue]="idx">
+                {{ l }} ({{ idx }})
+              </option>
+            </select>
+            <span class="mod-result">
+              D({{ letraSeleccionada }}) = <strong>{{ resultadoDescifradoLetra }}</strong> 
+              (&rarr; <strong class="decoded-char">{{ alfabeto[resultadoDescifradoLetra] }}</strong>)
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Caja de respuesta -->
+      <div class="answer-box" *ngIf="!pruebaSuperada">
+        <label for="respuesta">INTRODUCE EL MENSAJE DESCIFRADO (O PALABRA CLAVE):</label>
+        <div class="input-group">
+          <input 
+            id="respuesta"
+            type="text" 
+            [(ngModel)]="respuestaUsuario" 
+            placeholder="Ej: LA CLAVE..."
+            (keyup.enter)="comprobarRespuesta()"
+          />
+          <button class="btn-gold" (click)="comprobarRespuesta()">VERIFICAR</button>
+        </div>
+        <p class="error-msg" *ngIf="mensajeError">{{ mensajeError }}</p>
+      </div>
+
+      <!-- Banner de éxito -->
+      <div class="success-banner" *ngIf="pruebaSuperada">
+        <div class="fragment-unlocked">FRAGMENTO 3 DESBLOQUEADO</div>
+        <p>¡Cálculo impecable! Has resuelto la congruencia lineal tal como lo haría Genevieve Grotjan.</p>
+        <button class="btn-gold" (click)="irASiguientePrueba()">
+          VOLVER AL MAPA DE OPERACIONES &rarr;
+        </button>
+      </div>
+    </div>
+
+  </section>
+</main>
