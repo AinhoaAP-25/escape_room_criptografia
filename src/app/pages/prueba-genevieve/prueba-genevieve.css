@@ -160,12 +160,19 @@
   background: #0d0e0d;
   border: 1px solid #3d3a32;
   color: #c5a059;
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: bold;
-  text-align: center;
-  padding: 0.8rem;
+  padding: 0.8rem 1rem;
   margin: 1rem 0;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem 0.8rem;
+}
+
+.formula-part {
+  white-space: nowrap;
 }
 
 .intercepted-box {
