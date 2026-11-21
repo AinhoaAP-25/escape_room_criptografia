@@ -81,10 +81,6 @@ export class PruebaGenevieve implements AfterViewInit {
     return (this.claveA * this.inversoProbado) % 26;
   }
 
-  get esInversoValido(): boolean {
-    return this.productoModular === 1;
-  }
-
   get resultadoDescifradoLetra(): number {
     const raw = this.inversoProbado * (this.letraSeleccionada - this.claveB);
     return ((raw % 26) + 26) % 26;
