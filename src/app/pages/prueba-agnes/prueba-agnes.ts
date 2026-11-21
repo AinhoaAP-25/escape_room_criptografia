@@ -74,6 +74,10 @@ export class PruebaAgnes implements AfterViewInit {
     });
   }
 
+  trackByIndex(index: number): number {
+    return index;
+  }
+
   limpiarCuadricula(): void {
     this.grid = Array.from({ length: 5 }, () => Array(5).fill(''));
   }
@@ -82,8 +86,9 @@ export class PruebaAgnes implements AfterViewInit {
   onCellInput(fila: number, col: number, event: Event): void {
     const input = event.target as HTMLInputElement;
     const val = input.value.toUpperCase().replace(/[^A-Z]/g, '');
-    this.grid[fila][col] = val.slice(-1);
-    input.value = this.grid[fila][col];
+    const letra = val.slice(-1);
+    this.grid[fila][col] = letra;
+    input.value = letra;
   }
 
   pedirPista(): void {

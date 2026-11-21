@@ -95,10 +95,10 @@
           <div class="order-cell" *ngFor="let num of ordenColumnas">{{ num }}</div>
         </div>
 
-        <div class="matrix-row" *ngFor="let fila of grid; let f = index">
+        <div class="matrix-row" *ngFor="let fila of grid; let f = index; trackBy: trackByIndex">
           <div class="row-label">F{{ f + 1 }}</div>
           <input
-            *ngFor="let celda of fila; let c = index"
+            *ngFor="let celda of fila; let c = index; trackBy: trackByIndex"
             type="text"
             maxlength="1"
             class="matrix-cell"
