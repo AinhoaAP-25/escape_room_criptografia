@@ -1,1 +1,403 @@
-<p>prueba-joan works!</p>
+
+<main class="page-container">
+  <div class="tactical-grid"></div>
+  <div class="vignette"></div>
+
+  <header class="top-bar">
+    <div class="badge-mission">ARCHIVO 05 · BLETCHLEY PARK</div>
+    <div class="progress-indicator">JOAN CLARKE · ENIGMA I</div>
+  </header>
+
+  <!-- INTRODUCCIÓN -->
+  <section *ngIf="fase === 'intro'" class="content-wrapper">
+    <div class="dossier-card anim-in">
+      <div class="stamp">TOP SECRET</div>
+      <span class="dossier-tag">ÚLTIMO ARCHIVO INTERCEPTADO</span>
+
+      <h1>JOAN <span>CLARKE</span></h1>
+
+      <p class="bio-text">
+        Joan Clarke fue una matemática y criptoanalista británica que
+        trabajó en Bletchley Park durante la Segunda Guerra Mundial.
+        Participó en los esfuerzos para descifrar los mensajes protegidos
+        por la máquina Enigma.
+      </p>
+
+      <div class="highlight-box">
+        <p>
+          «La máquina cambia con cada letra. Para descubrir el mensaje,
+          tendrás que reconstruir su funcionamiento».
+        </p>
+      </div>
+
+      <p class="instruction">
+        Tu misión consiste en comprender cómo funciona Enigma,
+        experimentar con sus rotores y recuperar el último mensaje
+        interceptado.
+      </p>
+
+      <div class="actions-right">
+        <button class="btn-gold" (click)="empezarAprendizaje()">
+          EXPLORAR LA MÁQUINA →
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FASE DE APRENDIZAJE -->
+  <section *ngIf="fase === 'aprendizaje'" class="learning-layout">
+    <div class="section-heading">
+      <span class="dossier-tag">FASE 01 · INSTRUCCIÓN</span>
+      <h1>CONOCE <span>ENIGMA</span></h1>
+      <p>
+        Antes de descifrar el mensaje, experimenta con la máquina.
+        Pulsa distintas letras y observa qué sucede.
+      </p>
+    </div>
+
+    <div class="machine-panel">
+      <div class="machine-top">
+        <span>ENIGMA I</span>
+        <span class="machine-status">SISTEMA OPERATIVO</span>
+      </div>
+
+      <div class="rotors-area">
+        <div class="rotor-block">
+          <span class="rotor-label">ROTOR I</span>
+          <div class="rotor-window">{{ posicionesTexto[0] }}</div>
+        </div>
+
+        <div class="rotor-block">
+          <span class="rotor-label">ROTOR II</span>
+          <div class="rotor-window">{{ posicionesTexto[1] }}</div>
+        </div>
+
+        <div class="rotor-block">
+          <span class="rotor-label">ROTOR III</span>
+          <div class="rotor-window">{{ posicionesTexto[2] }}</div>
+        </div>
+      </div>
+
+      <div class="signal-path">
+        <span>TECLADO</span>
+        <div class="signal-line"></div>
+        <span>ROTORES</span>
+        <div class="signal-line"></div>
+        <span>REFLECTOR</span>
+        <div class="signal-line"></div>
+        <span>RETORNO</span>
+      </div>
+
+      <div class="lamp-display">
+        <span class="machine-label">PANEL DE LÁMPARAS</span>
+        <div class="lamp" [class.lamp-active]="letraSalida !== ''">
+          {{ letraSalida || '—' }}
+        </div>
+      </div>
+
+      <div class="keyboard">
+        <button
+          *ngFor="let letra of alfabeto.split('')"
+          class="key"
+          (click)="pulsarTecla(letra)">
+          {{ letra }}
+        </button>
+      </div>
+
+      <div class="machine-output">
+        <div>
+          <span class="machine-label">ÚLTIMA TECLA</span>
+          <strong>{{ letraEntrada || '—' }}</strong>
+        </div>
+        <div>
+          <span class="machine-label">SALIDA</span>
+          <strong>{{ letraSalida || '—' }}</strong>
+        </div>
+      </div>
+
+      <div class="training-message">
+        {{ mensajeSistema }}
+      </div>
+
+      <div class="training-result">
+        <span class="machine-label">RESULTADO DE TUS PULSACIONES</span>
+        <p>{{ mensajeEntrenamiento || 'Aquí aparecerán las letras obtenidas.' }}</p>
+      </div>
+
+      <button class="btn-outline" (click)="borrarEntrenamiento()">
+        REINICIAR MÁQUINA
+      </button>
+    </div>
+
+    <div class="learning-cards">
+      <article class="info-card">
+        <span class="info-number">01</span>
+        <h3>TECLADO</h3>
+        <p>
+          Al pulsar una letra, la máquina inicia el proceso de cifrado
+          o descifrado.
+        </p>
+      </article>
+
+      <article class="info-card">
+        <span class="info-number">02</span>
+        <h3>ROTORES</h3>
+        <p>
+          Los rotores cambian de posición antes de cada pulsación.
+          Por eso una misma letra puede producir resultados diferentes.
+        </p>
+      </article>
+
+      <article class="info-card">
+        <span class="info-number">03</span>
+        <h3>REFLECTOR</h3>
+        <p>
+          La señal llega al reflector y vuelve a atravesar los rotores
+          en sentido contrario.
+        </p>
+      </article>
+
+      <article class="info-card">
+        <span class="info-number">04</span>
+        <h3>PANEL DE LÁMPARAS</h3>
+        <p>
+          La letra iluminada indica el resultado final del recorrido
+          eléctrico.
+        </p>
+      </article>
+    </div>
+
+    <div class="learning-footer">
+      <button class="btn-outline" (click)="volverAlInicio()">
+        VOLVER
+      </button>
+      <button class="btn-gold" (click)="empezarMision()">
+        COMENZAR LA MISIÓN →
+      </button>
+    </div>
+  </section>
+
+  <!-- FASE DE MISIÓN -->
+  <section *ngIf="fase === 'mision'" class="mission-layout">
+    <div class="section-heading">
+      <span class="dossier-tag">FASE 02 · OPERACIÓN FINAL</span>
+      <h1>RECUPERA EL <span>MENSAJE</span></h1>
+      <p>
+        Configura la máquina siguiendo las instrucciones del archivo.
+        Después, procesa el mensaje interceptado letra a letra.
+      </p>
+    </div>
+
+    <div class="mission-grid">
+      <section class="panel-info">
+        <h2>CONFIGURACIÓN DE ENIGMA</h2>
+
+        <p class="instruction">
+          Selecciona los componentes y la posición inicial indicados
+          en el documento.
+        </p>
+
+        <div class="config-group">
+          <label>ROTOR IZQUIERDO</label>
+          <select [(ngModel)]="rotorIzquierdo">
+            <option value="">Seleccionar rotor</option>
+            <option value="I">Rotor I</option>
+            <option value="II">Rotor II</option>
+            <option value="III">Rotor III</option>
+          </select>
+        </div>
+
+        <div class="config-group">
+          <label>ROTOR CENTRAL</label>
+          <select [(ngModel)]="rotorCentral">
+            <option value="">Seleccionar rotor</option>
+            <option value="I">Rotor I</option>
+            <option value="II">Rotor II</option>
+            <option value="III">Rotor III</option>
+          </select>
+        </div>
+
+        <div class="config-group">
+          <label>ROTOR DERECHO</label>
+          <select [(ngModel)]="rotorDerecho">
+            <option value="">Seleccionar rotor</option>
+            <option value="I">Rotor I</option>
+            <option value="II">Rotor II</option>
+            <option value="III">Rotor III</option>
+          </select>
+        </div>
+
+        <div class="config-group">
+          <label>REFLECTOR</label>
+          <select [(ngModel)]="reflectorSeleccionado">
+            <option value="">Seleccionar reflector</option>
+            <option value="A">Reflector A</option>
+            <option value="B">Reflector B</option>
+            <option value="C">Reflector C</option>
+          </select>
+        </div>
+
+        <div class="config-group">
+          <label>POSICIÓN INICIAL DE LOS ROTORES</label>
+          <input
+            type="text"
+            maxlength="3"
+            placeholder="Ej. AAA"
+            [(ngModel)]="posicionInicial"
+            [disabled]="misionIniciada">
+        </div>
+
+        <div class="fixed-settings">
+          <p><span>ANILLOS</span> AAA</p>
+          <p><span>CLAVIJERO</span> SIN CONEXIONES</p>
+          <p><span>ALFABETO</span> A-Z</p>
+        </div>
+
+        <button
+          *ngIf="!misionIniciada"
+          class="btn-gold full-button"
+          (click)="comprobarConfiguracion()">
+          CONFIRMAR CONFIGURACIÓN
+        </button>
+
+        <button
+          *ngIf="misionIniciada"
+          class="btn-outline full-button"
+          (click)="reiniciarMision()">
+          REINICIAR MISIÓN
+        </button>
+
+        <p class="error-msg" *ngIf="mensajeError">
+          {{ mensajeError }}
+        </p>
+      </section>
+
+      <section class="panel-interactive">
+        <div class="machine-top">
+          <span>ENIGMA I · UNIDAD DE DESCIFRADO</span>
+          <span class="machine-status">
+            {{ misionIniciada ? 'ACTIVA' : 'ESPERANDO CONFIGURACIÓN' }}
+          </span>
+        </div>
+
+        <div class="rotors-area mission-rotors">
+          <div class="rotor-block">
+            <span class="rotor-label">I</span>
+            <div class="rotor-window">{{ posicionesTexto[0] }}</div>
+          </div>
+          <div class="rotor-block">
+            <span class="rotor-label">II</span>
+            <div class="rotor-window">{{ posicionesTexto[1] }}</div>
+          </div>
+          <div class="rotor-block">
+            <span class="rotor-label">III</span>
+            <div class="rotor-window">{{ posicionesTexto[2] }}</div>
+          </div>
+        </div>
+
+        <div class="rotor-manual-control">
+
+        <p>
+            AJUSTE MANUAL DEL ROTOR DERECHO
+        </p>
+
+        <button
+            class="btn-gold full-button"
+            [disabled]="!misionIniciada || ajusteInicialRealizado || indiceMensaje > 0"
+            (click)="avanzarRotorInicial()">
+
+            {{ ajusteInicialRealizado
+            ? 'ROTOR DERECHO PREPARADO'
+            : 'AVANZAR ROTOR DERECHO →' }}
+
+        </button>
+
+        <p class="instruction">
+            Antes de introducir la primera letra, comprueba la posición de los rotores.
+        </p>
+
+        </div>
+
+        <div class="lampboard">
+            <h3>PANEL DE LÁMPARAS</h3>
+
+            <div class="lampboard-row" *ngFor="let fila of filasTeclado">
+                <div
+                *ngFor="let letra of fila.split('')"
+                class="lamp"
+                [class.lamp-active]="letraSalida === letra">
+                {{ letra }}
+                </div>
+            </div>
+        </div>
+
+        <div class="intercepted-box">
+          <span class="machine-label">MENSAJE INTERCEPTADO</span>
+          <p>{{ mensajeCifrado }}</p>
+        </div>
+
+        <div class="mission-progress">
+          <div class="progress-label">
+            <span>LETRAS PROCESADAS</span>
+            <strong>{{ indiceMensaje }} / {{ mensajeCifrado.length }}</strong>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" [style.width.%]="progresoMision"></div>
+          </div>
+        </div>
+
+        <div class="decoded-box">
+          <span class="machine-label">MENSAJE RECUPERADO</span>
+          <p>{{ mensajeDescifrado || 'Esperando entrada...' }}</p>
+        </div>
+
+        <div class="mission-keyboard">
+            <h3>INTRODUCE EL MENSAJE INTERCEPTADO</h3>
+
+            <div class="keyboard-row" *ngFor="let fila of filasTeclado">
+                <button
+                *ngFor="let letra of fila.split('')"
+                class="key"
+                [disabled]="!misionIniciada || misionTerminada || pruebaSuperada"
+                (click)="pulsarTecla(letra)">
+                {{ letra }}
+                </button>
+            </div>
+        </div>
+
+        <p class="training-message">
+          {{ mensajeSistema }}
+        </p>
+
+        <div class="success-banner" *ngIf="pruebaSuperada">
+          <span class="success-icon">✓</span>
+          <h2>MENSAJE DESCIFRADO</h2>
+          <p>LA CRIPTOGRAFÍA ABRE PUERTAS</p>
+          <p class="fragment-text">FRAGMENTO RECUPERADO: PUERTAS</p>
+          <button class="btn-gold" (click)="irASiguientePrueba()">
+            FINALIZAR RECORRIDO →
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <button class="hint-button" (click)="pedirExplicacion()">
+      {{ mostrarExplicacion ? 'OCULTAR EXPLICACIÓN' : 'RECORDAR EL FUNCIONAMIENTO DE ENIGMA' }}
+    </button>
+
+    <div class="explanation-box" *ngIf="mostrarExplicacion">
+      <h3>¿CÓMO FUNCIONA ENIGMA?</h3>
+      <p>
+        La señal parte del teclado, atraviesa los rotores de derecha
+        a izquierda, llega al reflector y vuelve a pasar por los rotores
+        en sentido contrario. Finalmente, se ilumina una letra en el
+        panel de lámparas.
+      </p>
+      <p>
+        Antes de cada pulsación, los rotores avanzan. Por eso el recorrido
+        eléctrico cambia continuamente.
+      </p>
+    </div>
+  </section>
+</main>
+
