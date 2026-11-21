@@ -1,1 +1,269 @@
-<p>prueba-mavis works!</p>
+<main class="page-container">
+  <div class="tactical-grid"></div>
+  <div class="vignette"></div>
+
+  <!-- Barra superior -->
+  <header class="top-bar">
+    <span class="badge-mission">ARCHIVO 04 // MAVIS BATEY</span>
+    <span class="progress-indicator">PRUEBA 4 DE 5</span>
+  </header>
+
+  <!-- FASE 1: CONTEXTO HISTÓRICO -->
+  <section *ngIf="fase === 'intro'" class="content-wrapper">
+    <article class="dossier-card anim-in">
+
+      <div class="stamp">DESCLASIFICADO</div>
+
+      <span class="dossier-tag">
+        PERFIL DE CRIPTOANALISTA // BLETCHLEY PARK
+      </span>
+
+      <h1>MAVIS BATEY</h1>
+
+      <div class="bio-text">
+        <p>
+          <strong>Mavis Batey</strong> fue una destacada criptoanalista
+          británica que trabajó durante la Segunda Guerra Mundial
+          en Bletchley Park, el centro británico dedicado al
+          descifrado de comunicaciones enemigas.
+        </p>
+
+        <p>
+          Su trabajo estuvo relacionado con el análisis de mensajes
+          cifrados y la búsqueda de patrones que permitieran
+          recuperar la información original.
+        </p>
+
+        <div class="highlight-box">
+          <strong>TU MISIÓN:</strong> Has interceptado un mensaje
+          cifrado mediante el método de Vigenère. Utiliza la clave
+          proporcionada y la tabla de Vigenère para descubrir
+          la ubicación del siguiente archivo.
+        </div>
+      </div>
+
+      <div class="actions-right">
+        <button class="btn-gold" (click)="pasarAlReto()">
+          DESCIFRAR SU CÓDIGO &rarr;
+        </button>
+      </div>
+
+    </article>
+  </section>
+
+
+  <!-- FASE 2: EL RETO + TABLA DE VIGENÈRE -->
+  <section *ngIf="fase === 'reto'" class="puzzle-layout">
+
+    <!-- COLUMNA IZQUIERDA: ENUNCIADO Y PISTAS -->
+    <div class="panel-info reto-anim">
+
+      <h2>CIFRADO DE VIGENÈRE</h2>
+
+      <p class="instruction">
+        El cifrado de Vigenère utiliza una clave formada por letras.
+        Cada letra de la clave determina un desplazamiento diferente
+        para cifrar o descifrar cada letra del mensaje.
+      </p>
+
+      <div class="formula-box">
+        P = (C - K) mod 26
+      </div>
+
+      <p class="instruction">
+        Para descifrar, utiliza el alfabeto inglés de 26 letras
+        (sin Ñ), asignando a cada letra un valor numérico:
+        A = 0, B = 1, ..., Z = 25.
+      </p>
+
+      <!-- MENSAJE INTERCEPTADO -->
+      <div class="intercepted-box">
+
+        <span class="label">MENSAJE INTERCEPTADO:</span>
+
+        <div class="cipher-text">
+          {{ mensajeCifrado }}
+        </div>
+
+        <p class="freq-clue">
+          <strong>Clave de descifrado:</strong>
+          <strong class="key-word">{{ clave }}</strong>
+        </p>
+
+        <p class="freq-clue">
+          Repite la clave hasta que tenga la misma longitud
+          que el mensaje cifrado. Después, descifra cada letra
+          utilizando la fórmula indicada.
+        </p>
+
+      </div>
+
+      <!-- SISTEMA DE 3 PISTAS -->
+      <div class="hints-section">
+
+        <button
+          class="btn-outline"
+          (click)="pedirPista()"
+          [disabled]="pistasDesbloqueadas >= pistas.length">
+
+          {{
+            pistasDesbloqueadas < pistas.length
+              ? 'SOLICITAR PISTA (' + pistasDesbloqueadas + '/3)'
+              : 'TODAS LAS PISTAS DESBLOQUEADAS'
+          }}
+
+        </button>
+
+        <ul class="hints-list" *ngIf="pistasDesbloqueadas > 0">
+          <li *ngFor="let p of pistas.slice(0, pistasDesbloqueadas)">
+            {{ p }}
+          </li>
+        </ul>
+
+      </div>
+    </div>
+
+
+    <!-- COLUMNA DERECHA: HERRAMIENTA Y VALIDACIÓN -->
+    <div class="panel-interactive reto-anim">
+
+      <div class="wheel-header">
+        <h3>TABLA DE VIGENÈRE</h3>
+      </div>
+
+      <p class="helper-tip">
+        <strong>HERRAMIENTA DE AYUDA:</strong>
+        Utiliza esta tabla para consultar las correspondencias
+        entre letras. Selecciona una fila para resaltarla y pulsa
+        sobre una casilla para marcarla.
+      </p>
+
+      <!-- TABLA DE VIGENÈRE -->
+      <div class="vigenere-container">
+
+        <div class="table-instructions">
+          <span>Filas: letras de la clave</span>
+          <span>Columnas: letras originales</span>
+        </div>
+
+        <div class="vigenere-scroll">
+
+          <table class="vigenere-table">
+
+            <thead>
+              <tr>
+                <th class="corner-cell">K / P</th>
+
+                <th *ngFor="let letra of alfabeto">
+                  {{ letra }}
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr
+                *ngFor="let fila of tablaVigenere; let i = index"
+                [class.active-row]="filaSeleccionada === i">
+
+                <th
+                  class="row-letter"
+                  [class.active-header]="filaSeleccionada === i"
+                  (click)="seleccionarFila(i)"
+                  title="Seleccionar fila">
+
+                  {{ alfabeto[i] }}
+
+                </th>
+
+                <td
+                  *ngFor="let letra of fila; let j = index"
+                  [class.marked-cell]="esCeldaSeleccionada(i, j)"
+                  (click)="marcarCelda(i, j)"
+                  title="Marcar casilla">
+
+                  {{ letra }}
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+        <p class="table-note">
+          Consulta la fila correspondiente a la letra de la clave.
+          Busca en ella la letra cifrada y utiliza la letra de la
+          columna superior para identificar la letra original.
+          La tabla no realiza los cálculos por ti.
+        </p>
+
+        <button
+            class="btn-outline clear-selection"
+            (click)="limpiarSeleccion()">
+            LIMPIAR SELECCIÓN
+        </button>
+
+      </div>
+
+
+      <!-- CAJA DE RESPUESTA -->
+      <div class="answer-box" *ngIf="!pruebaSuperada">
+
+        <label for="respuesta">
+          INTRODUCE EL MENSAJE DESCIFRADO:
+        </label>
+
+        <div class="input-group">
+
+          <input
+            id="respuesta"
+            type="text"
+            [(ngModel)]="respuestaUsuario"
+            placeholder="Ej: DIRIGETE A..."
+            (keyup.enter)="comprobarRespuesta()"
+          />
+
+          <button class="btn-gold" (click)="comprobarRespuesta()">
+            VERIFICAR
+          </button>
+
+        </div>
+
+        <p class="error-msg" *ngIf="mensajeError">
+          {{ mensajeError }}
+        </p>
+
+      </div>
+
+
+      <!-- BANNER DE ÉXITO -->
+      <div class="success-banner" *ngIf="pruebaSuperada">
+
+        <div class="fragment-unlocked">
+          FRAGMENTO 4 DESBLOQUEADO
+        </div>
+
+        <p>
+          ¡Brillante deducción! Has descifrado el mensaje
+          utilizando el método de Vigenère y has seguido
+          los pasos de Mavis Batey.
+        </p>
+
+        <p class="success-location">
+          DIRÍGETE A LA TORRE NORTE
+        </p>
+
+        <button class="btn-gold" (click)="irASiguientePrueba()">
+          VOLVER AL MAPA DE OPERACIONES &rarr;
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+</main>

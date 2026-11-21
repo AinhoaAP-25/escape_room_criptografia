@@ -1,0 +1,175 @@
+
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.final-container {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #0b0d0c;
+  color: #e8e6df;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Courier Prime', monospace;
+}
+
+/* Fondo */
+.tactical-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(197, 160, 89, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(197, 160, 89, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: 1;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 20%, #050606 90%);
+  z-index: 2;
+}
+
+/* Carta */
+.dossier-wrapper {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.dossier-paper {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 650px;
+  padding: 3rem 2.5rem;
+  background-color: #1c1b18;
+  border: 1px solid #3d3a32;
+  border-left: 6px solid #c5a059;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.85);
+}
+
+.stamp {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  border: 3px solid #9e2a2b;
+  color: #9e2a2b;
+  font-weight: bold;
+  font-size: 0.85rem;
+  padding: 0.2rem 0.8rem;
+  letter-spacing: 2px;
+  transform: rotate(12deg);
+  opacity: 0.85;
+}
+
+.dossier-code {
+  font-size: 0.85rem;
+  color: #c5a059;
+  letter-spacing: 1.5px;
+}
+
+.dossier-header h2 {
+  font-size: 1.7rem;
+  margin: 0.8rem 0 1.5rem;
+  color: #f4f1ea;
+  border-bottom: 1px solid #3d3a32;
+  padding-bottom: 1rem;
+}
+
+.final-title {
+  color: #c5a059;
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
+  text-align: center;
+  margin: 1rem 0 2rem;
+  letter-spacing: 2px;
+}
+
+.dossier-body p {
+  line-height: 1.7;
+  font-size: 1.05rem;
+  color: #d6d3c9;
+  margin-bottom: 1.2rem;
+}
+
+/* Contraseña y mensaje */
+.mission-brief {
+  background: rgba(0, 0, 0, 0.35);
+  border-left: 3px solid #9e2a2b;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  color: #e8e6df;
+}
+
+.mission-brief p {
+  margin-bottom: 0.5rem;
+  color: #c5a059;
+}
+
+.mission-brief h3 {
+  margin: 0 0 1.5rem;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  color: #f4f1ea;
+}
+
+/* Parte inferior */
+.dossier-footer {
+  margin-top: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.ready-text {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #c5a059;
+  margin: 0;
+}
+
+.btn-action {
+  background-color: #c5a059;
+  color: #0b0d0c;
+  border: none;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-action:hover {
+  background-color: #dfb96e;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+  .dossier-paper {
+    padding: 3.5rem 1.3rem 2rem;
+  }
+
+  .stamp {
+    font-size: 0.7rem;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .dossier-footer {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+}
