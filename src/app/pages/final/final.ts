@@ -8,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class Final {
 
+  reiniciarJuego() {
+    // Más adelante conectaremos aquí el reinicio
+    // del progreso de las cinco pruebas.
+  }
+
 }
