@@ -91,6 +91,36 @@ export class PruebaAgnes implements AfterViewInit {
     input.value = letra;
   }
 
+  // Permite navegar entre casillas con las flechas del teclado
+  onCellKeyDown(fila: number, col: number, event: KeyboardEvent): void {
+    let nuevaFila = fila;
+    let nuevaCol = col;
+
+    switch (event.key) {
+      case 'ArrowUp':
+        nuevaFila = Math.max(0, fila - 1);
+        break;
+      case 'ArrowDown':
+        nuevaFila = Math.min(4, fila + 1);
+        break;
+      case 'ArrowLeft':
+        nuevaCol = Math.max(0, col - 1);
+        break;
+      case 'ArrowRight':
+        nuevaCol = Math.min(4, col + 1);
+        break;
+      default:
+        return; // Si no es una flecha, deja que escriba o borre normal
+    }
+
+    event.preventDefault(); // Evita que el cursor se mueva dentro del texto
+    const siguienteCasilla = document.getElementById(`cell-${nuevaFila}-${nuevaCol}`) as HTMLInputElement | null;
+    if (siguienteCasilla) {
+      siguienteCasilla.focus();
+      siguienteCasilla.select(); // Selecciona la letra si ya había una para sobrescribirla fácil
+    }
+  }
+
   pedirPista(): void {
     if (this.pistasDesbloqueadas < this.pistas.length) {
       this.pistasDesbloqueadas++;
