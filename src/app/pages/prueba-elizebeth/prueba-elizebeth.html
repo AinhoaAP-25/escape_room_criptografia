@@ -1,1 +1,167 @@
-<p>prueba-elizebeth works!</p>
+<main class="page-container">
+  <div class="tactical-grid"></div>
+  <div class="vignette"></div>
+
+  <!-- Barra superior -->
+  <header class="top-bar">
+    <span class="badge-mission">ARCHIVO 02 // ELIZEBETH SMITH FRIEDMAN</span>
+    <span class="progress-indicator">PRUEBA 2 DE 5</span>
+  </header>
+
+  <!-- FASE 1: CONTEXTO HISTÓRICO -->
+  <section *ngIf="fase === 'intro'" class="content-wrapper">
+    <article class="dossier-card anim-in">
+      <div class="stamp">DESCLASIFICADO</div>
+      <span class="dossier-tag">PERFIL DE CRIPTOANALISTA // ESTACIÓN DE ESCUCHA</span>
+      <h1>ELIZEBETH SMITH FRIEDMAN</h1>
+
+      <div class="bio-text">
+        <p>
+          <strong>Elizebeth Smith Friedman</strong> (1892–1980) es reconocida como la primera gran criptoanalista 
+          estadounidense. Su carrera comenzó analizando tipografías en las obras de Shakespeare y la llevó a 
+          descifrar miles de mensajes interceptados por radio durante la Primera Guerra Mundial, la Ley Seca 
+          y la Segunda Guerra Mundial utilizando únicamente lápiz, papel y tablas de frecuencias.
+        </p>
+        <p>
+          Especialista en atacar criptogramas puros sin conocer el idioma ni la clave, detectaba patrones 
+          estadísticos hasta hacer emerger el mensaje oculto.
+        </p>
+        <div class="highlight-box">
+          <strong>TU MISIÓN:</strong> Hemos interceptado una transmisión cifrada por sustitución monoalfabética 
+          (Cifrado César). Utiliza el análisis de frecuencias y la rueda de cifrado para descubrir la ubicación 
+          del siguiente archivo.
+        </div>
+      </div>
+
+      <div class="actions-right">
+        <button class="btn-gold" (click)="pasarAlReto()">
+          DESCIFRAR SU CÓDIGO &rarr;
+        </button>
+      </div>
+    </article>
+  </section>
+
+  <!-- FASE 2: EL RETO + RUEDA CÉSAR VIRTUAL -->
+  <section *ngIf="fase === 'reto'" class="puzzle-layout">
+    
+    <!-- Columna Izquierda: Enunciado, Fórmula y Pistas -->
+    <div class="panel-info reto-anim">
+      <h2>CIFRADO DE CÉSAR</h2>
+      <p class="instruction">
+        Cada letra original <em>(x)</em> se ha sustituido por otra situada <strong>k posiciones más adelante</strong> 
+        en el alfabeto inglés de 26 letras (sin Ñ):
+      </p>
+
+      <div class="formula-box">
+        C(x) = (x + k) mod 26
+      </div>
+
+      <div class="intercepted-box">
+        <span class="label">MENSAJE INTERCEPTADO:</span>
+        <div class="cipher-text">{{ mensajeCifrado }}</div>
+        <p class="freq-clue">
+          <strong>Análisis de frecuencias:</strong> La letra <strong>E</strong> (la más habitual en castellano) 
+          ha sido sustituida por la letra <strong>J</strong> en este mensaje.
+        </p>
+      </div>
+
+      <!-- Sistema de 3 pistas -->
+      <div class="hints-section">
+        <button 
+          class="btn-outline" 
+          (click)="pedirPista()" 
+          [disabled]="pistasDesbloqueadas >= pistas.length">
+          {{ pistasDesbloqueadas < pistas.length ? 'SOLICITAR PISTA (' + pistasDesbloqueadas + '/3)' : 'TODAS LAS PISTAS DESBLOQUEADAS' }}
+        </button>
+
+        <ul class="hints-list" *ngIf="pistasDesbloqueadas > 0">
+          <li *ngFor="let p of pistas.slice(0, pistasDesbloqueadas)">{{ p }}</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Columna Derecha: Rueda César Interactiva y Validación -->
+    <div class="panel-interactive reto-anim">
+      <div class="wheel-header">
+        <h3>RUEDA CÉSAR VIRTUAL</h3>
+        <div class="shift-controls">
+          <button class="step-btn" (click)="girarRueda(-1)">&minus;</button>
+          <span class="k-display">k = {{ desplazamiento }}</span>
+          <button class="step-btn" (click)="girarRueda(1)">+</button>
+        </div>
+      </div>
+
+      <p class="helper-tip">
+        Anillo exterior (dorado): <strong>Texto Original (x)</strong> &bull; 
+        Anillo interior (blanco): <strong>Texto Cifrado C(x)</strong>
+      </p>
+
+      <!-- Rueda César SVG interactiva -->
+      <div class="wheel-container">
+        <svg viewBox="0 0 340 340" class="caesar-svg">
+          <!-- Círculos base -->
+          <circle cx="170" cy="170" r="160" fill="#121311" stroke="#c5a059" stroke-width="2" />
+          <circle cx="170" cy="170" r="122" fill="#1c1b18" stroke="#4a473d" stroke-width="1.5" />
+          <circle cx="170" cy="170" r="82" fill="#0d0e0d" stroke="#c5a059" stroke-width="1.5" />
+
+          <!-- Divisiones radiales y letras -->
+          <g *ngFor="let letra of alfabeto; let i = index" 
+             [attr.transform]="'rotate(' + getAnguloSector(i) + ' 170 170)'">
+            <!-- Línea divisoria -->
+            <line x1="170" y1="10" x2="170" y2="88" stroke="rgba(197, 160, 89, 0.2)" stroke-width="1" />
+            
+            <!-- Letra Original (Anillo exterior) -->
+            <text x="170" y="34" text-anchor="middle" fill="#c5a059" font-size="13" font-weight="bold">
+              {{ letra }}
+            </text>
+
+            <!-- Letra Cifrada según desplazamiento k (Anillo interior) -->
+            <text x="170" y="70" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="bold">
+              {{ obtenerLetraCifrada(i) }}
+            </text>
+          </g>
+
+          <!-- Centro informativo -->
+          <text x="170" y="164" text-anchor="middle" fill="#a3a8a5" font-size="11">DESPLAZAMIENTO</text>
+          <text x="170" y="186" text-anchor="middle" fill="#c5a059" font-size="22" font-weight="bold">
+            +{{ desplazamiento }}
+          </text>
+        </svg>
+      </div>
+
+      <!-- Tabla rápida de correspondencia lineal -->
+      <div class="linear-strip">
+        <div class="strip-col" *ngFor="let letra of alfabeto; let i = index">
+          <span class="orig">{{ letra }}</span>
+          <span class="ciph">{{ obtenerLetraCifrada(i) }}</span>
+        </div>
+      </div>
+
+      <!-- Caja de respuesta -->
+      <div class="answer-box" *ngIf="!pruebaSuperada">
+        <label for="respuesta">INTRODUCE EL MENSAJE DESCIFRADO (O PALABRA CLAVE):</label>
+        <div class="input-group">
+          <input 
+            id="respuesta"
+            type="text" 
+            [(ngModel)]="respuestaUsuario" 
+            placeholder="Ej: LA CLAVE..."
+            (keyup.enter)="comprobarRespuesta()"
+          />
+          <button class="btn-gold" (click)="comprobarRespuesta()">VERIFICAR</button>
+        </div>
+        <p class="error-msg" *ngIf="mensajeError">{{ mensajeError }}</p>
+      </div>
+
+      <!-- Banner de éxito -->
+      <div class="success-banner" *ngIf="pruebaSuperada">
+        <div class="fragment-unlocked">FRAGMENTO 2 DESBLOQUEADO</div>
+        <p>¡Brillante deducción! Has roto el cifrado de sustitución siguiendo los pasos de Elizebeth Friedman.</p>
+        <button class="btn-gold" (click)="irASiguientePrueba()">
+          VOLVER AL MAPA DE OPERACIONES &rarr;
+        </button>
+      </div>
+    </div>
+
+  </section>
+</main>
