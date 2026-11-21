@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { Home } from './pages/home/home';
+import { MapaRecorrido } from './components/mapa-recorrido/mapa-recorrido';
 import { PruebaAgnes } from './pages/prueba-agnes/prueba-agnes';
 import { PruebaElizebeth } from './pages/prueba-elizebeth/prueba-elizebeth';
 import { PruebaGenevieve } from './pages/prueba-genevieve/prueba-genevieve';
@@ -9,6 +10,7 @@ import { Final } from './pages/final/final';
 
 export const routes: Routes = [
   { path: '', component: Home },
+  { path: 'mapa', component: MapaRecorrido },
   { path: 'prueba-1', component: PruebaAgnes },
   { path: 'prueba-2', component: PruebaElizebeth },
   { path: 'prueba-3', component: PruebaGenevieve },

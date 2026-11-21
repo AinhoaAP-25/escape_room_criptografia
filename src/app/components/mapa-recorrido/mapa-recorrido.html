@@ -1,0 +1,75 @@
+<main class="map-screen">
+  <header class="map-header">
+    <div>
+      <span class="tag">CUARTEL GENERAL DE INTELIGENCIA // MAPA DE OPERACIONES</span>
+      <h1>RECORRIDO DE DESPLIEGUE</h1>
+    </div>
+    <div class="fragments-hud">
+      <span>FRAGMENTOS OBTENIDOS:</span>
+      <strong>{{ progreso.fragmentos.length }} / 5</strong>
+    </div>
+  </header>
+
+  <p class="map-instruction" *ngIf="progreso.nivelActual <= 5">
+    Selecciona el objetivo activo en el mapa táctico para infiltrarte y descifrar el archivo correspondiente.
+  </p>
+
+  <!-- Lienzo del Mapa Táctico -->
+  <section class="tactical-board">
+    <!-- Cuadrícula y líneas topográficas SVG -->
+    <svg class="route-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <!-- Ruta completa punteada -->
+      <polyline
+        points="15,72 34,35 54,65 72,28 88,58"
+        fill="none"
+        stroke="rgba(197, 160, 89, 0.25)"
+        stroke-width="0.5"
+        stroke-dasharray="1.5,1.5"
+      />
+      <!-- Tramo ya recorrido iluminado -->
+      <polyline
+        *ngIf="progreso.nivelActual >= 2"
+        [attr.points]="
+          progreso.nivelActual === 2 ? '15,72 34,35' :
+          progreso.nivelActual === 3 ? '15,72 34,35 54,65' :
+          progreso.nivelActual === 4 ? '15,72 34,35 54,65 72,28' :
+          '15,72 34,35 54,65 72,28 88,58'
+        "
+        fill="none"
+        stroke="#4caf50"
+        stroke-width="0.6"
+      />
+    </svg>
+
+    <!-- Nodos de las 5 ubicaciones -->
+    <div
+      *ngFor="let p of puntos"
+      class="map-node"
+      [ngClass]="estadoPunto(p.id)"
+      [style.left.%]="p.x"
+      [style.top.%]="p.y"
+      (click)="entrarAPunto(p)"
+    >
+      <div class="pulse-ring" *ngIf="estadoPunto(p.id) === 'activo'"></div>
+      <div class="node-marker">
+        <span *ngIf="estadoPunto(p.id) === 'completado'">✓</span>
+        <span *ngIf="estadoPunto(p.id) === 'activo'">0{{ p.id }}</span>
+        <span *ngIf="estadoPunto(p.id) === 'bloqueado'">🔒</span>
+      </div>
+
+      <div class="node-card">
+        <span class="node-status">
+          {{ estadoPunto(p.id) === 'completado' ? 'DESCIFRADO' : (estadoPunto(p.id) === 'activo' ? 'OBJETIVO ACTIVO' : 'BLOQUEADO') }}
+        </span>
+        <h3>{{ p.criptografa }}</h3>
+        <p>{{ p.sector }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Botón final cuando se superan las 5 pruebas -->
+  <div class="final-banner" *ngIf="progreso.nivelActual > 5">
+    <h2>¡TODOS LOS SECTORES HAN SIDO DESPEJADOS!</h2>
+    <button class="btn-gold" (click)="irAlFinal()">ABRIR ARCHIVO SECRETO FINAL &rarr;</button>
+  </div>
+</main>

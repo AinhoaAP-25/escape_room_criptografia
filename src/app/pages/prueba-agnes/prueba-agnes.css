@@ -1,0 +1,429 @@
+.page-container {
+  position: relative;
+  min-height: 100vh;
+  background-color: #0b0d0c;
+  color: #e8e6df;
+  font-family: 'Courier Prime', monospace;
+  padding: 1.5rem 2rem 3rem 2rem;
+  overflow-x: hidden;
+}
+
+.tactical-grid {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(197, 160, 89, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(197, 160, 89, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 30%, #050606 95%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Barra superior */
+.top-bar {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #2e2c26;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+  letter-spacing: 1.5px;
+}
+
+.badge-mission {
+  color: #c5a059;
+  font-weight: bold;
+}
+
+.progress-indicator {
+  background: rgba(197, 160, 89, 0.12);
+  border: 1px solid #c5a059;
+  padding: 0.25rem 0.75rem;
+  color: #c5a059;
+}
+
+/* FASE 1: DOSSIER */
+.content-wrapper {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 75vh;
+}
+
+.dossier-card {
+  position: relative;
+  background-color: #1c1b18;
+  border: 1px solid #3d3a32;
+  border-left: 6px solid #c5a059;
+  max-width: 720px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
+}
+
+.stamp {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  border: 2px solid #9e2a2b;
+  color: #9e2a2b;
+  font-family: 'Oswald', sans-serif;
+  padding: 0.2rem 0.7rem;
+  letter-spacing: 2px;
+  transform: rotate(10deg);
+}
+
+.dossier-tag {
+  color: #c5a059;
+  font-size: 0.85rem;
+  letter-spacing: 1.5px;
+}
+
+.dossier-card h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.2rem;
+  margin: 0.4rem 0 1.5rem 0;
+  color: #ffffff;
+  border-bottom: 1px solid #3d3a32;
+  padding-bottom: 0.8rem;
+}
+
+.bio-text p {
+  line-height: 1.7;
+  color: #d6d3c9;
+  margin-bottom: 1.2rem;
+}
+
+.highlight-box {
+  background: rgba(0, 0, 0, 0.4);
+  border-left: 3px solid #c5a059;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  color: #f4f1ea;
+}
+
+.actions-right {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+}
+
+/* FASE 2: RETO */
+.puzzle-layout {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+  .puzzle-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel-info, .panel-interactive {
+  background-color: #161715;
+  border: 1px solid #33312b;
+  padding: 2rem;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+}
+
+.panel-info h2, .panel-interactive h3 {
+  font-family: 'Oswald', sans-serif;
+  color: #c5a059;
+  margin-top: 0;
+  letter-spacing: 1.5px;
+}
+
+.instruction {
+  line-height: 1.6;
+  color: #d6d3c9;
+}
+
+.intercepted-box {
+  background: #0d0e0d;
+  border: 1px dashed #c5a059;
+  padding: 1.2rem;
+  margin: 1.5rem 0;
+}
+
+.intercepted-box .label {
+  display: block;
+  font-size: 0.8rem;
+  color: #a3a8a5;
+  margin-bottom: 0.8rem;
+}
+
+.cipher-blocks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.cipher-blocks .block {
+  background: #1f211e;
+  border: 1px solid #3d3a32;
+  padding: 0.5rem 0.8rem;
+  text-align: center;
+}
+
+.cipher-blocks .block small {
+  display: block;
+  font-size: 0.7rem;
+  color: #c5a059;
+}
+
+.cipher-blocks .block strong {
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  color: #ffffff;
+}
+
+.note {
+  font-size: 0.85rem;
+  color: #9e9b90;
+  margin: 0.8rem 0 0 0;
+}
+
+/* Pistas */
+.hints-section {
+  margin-top: 1.5rem;
+}
+
+.hints-list {
+  margin-top: 1rem;
+  padding-left: 1.2rem;
+  color: #e8e6df;
+  font-size: 0.92rem;
+}
+
+.hints-list li {
+  margin-bottom: 0.6rem;
+  line-height: 1.5;
+}
+
+/* Cuadrícula interactiva */
+.grid-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.helper-tip {
+  font-size: 0.85rem;
+  color: #a3a8a5;
+  margin-bottom: 1.2rem;
+}
+
+.matrix-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #0d0e0d;
+  padding: 1.2rem;
+  border: 1px solid #2e2c26;
+}
+
+.matrix-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.row-label {
+  width: 55px;
+  font-size: 0.8rem;
+  color: #a3a8a5;
+  text-align: right;
+  padding-right: 0.5rem;
+}
+
+.order-cell {
+  width: 44px;
+  height: 36px;
+  background: #c5a059;
+  color: #0b0d0c;
+  font-family: 'Oswald', sans-serif;
+  font-weight: bold;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.matrix-cell {
+  width: 44px;
+  height: 44px;
+  background: #1c1b18;
+  border: 1px solid #4a473d;
+  color: #ffffff;
+  font-family: 'Courier Prime', monospace;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.matrix-cell:focus {
+  outline: none;
+  border-color: #c5a059;
+  background: #262520;
+}
+
+/* Botones de volcado rápido */
+.quick-fill {
+  width: 100%;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #2e2c26;
+  font-size: 0.8rem;
+  color: #a3a8a5;
+}
+
+.quick-buttons {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.4rem;
+}
+
+.block-tag {
+  color: #c5a059;
+  min-width: 72px;
+}
+
+.mini-btn {
+  background: #232421;
+  border: 1px solid #3d3a32;
+  color: #d6d3c9;
+  padding: 0.2rem 0.45rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  font-family: 'Courier Prime', monospace;
+}
+
+.mini-btn:hover {
+  border-color: #c5a059;
+  color: #c5a059;
+}
+
+/* Validación */
+.answer-box {
+  margin-top: 1.5rem;
+}
+
+.answer-box label {
+  display: block;
+  font-size: 0.85rem;
+  color: #c5a059;
+  margin-bottom: 0.5rem;
+}
+
+.input-group {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.input-group input {
+  flex: 1;
+  background: #0d0e0d;
+  border: 1px solid #4a473d;
+  color: #ffffff;
+  padding: 0.8rem 1rem;
+  font-family: 'Courier Prime', monospace;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #c5a059;
+}
+
+.error-msg {
+  color: #e05252;
+  font-size: 0.9rem;
+  margin-top: 0.6rem;
+}
+
+/* Éxito */
+.success-banner {
+  margin-top: 1.5rem;
+  background: rgba(46, 125, 50, 0.15);
+  border: 1px solid #4caf50;
+  padding: 1.2rem;
+  text-align: center;
+}
+
+.fragment-unlocked {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.3rem;
+  color: #81c784;
+  letter-spacing: 1.5px;
+  margin-bottom: 0.5rem;
+}
+
+/* Botones generales */
+.btn-gold {
+  background-color: #c5a059;
+  color: #0b0d0c;
+  border: none;
+  padding: 0.85rem 1.8rem;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-gold:hover {
+  background-color: #dfb96e;
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid #c5a059;
+  color: #c5a059;
+  padding: 0.6rem 1.2rem;
+  font-family: 'Courier Prime', monospace;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.btn-outline:hover:not(:disabled) {
+  background: rgba(197, 160, 89, 0.12);
+}
+
+.btn-outline:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-small {
+  background: #262520;
+  border: 1px solid #4a473d;
+  color: #d6d3c9;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+}

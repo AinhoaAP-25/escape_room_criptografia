@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import gsap from 'gsap';
@@ -11,15 +11,14 @@ import gsap from 'gsap';
   styleUrls: ['./home.css']
 })
 export class Home implements AfterViewInit {
-  @ViewChild('heroSection') heroSection!: ElementRef;
-  @ViewChild('dossierCard') dossierCard!: ElementRef;
-
   mostrarCarta = false;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngAfterViewInit(): void {
-    // Animación inicial de entrada de los elementos de portada
     gsap.from('.hero-element', {
       y: 30,
       opacity: 0,
@@ -30,32 +29,31 @@ export class Home implements AfterViewInit {
   }
 
   abrirExpediente(): void {
-    // Oculta la portada suavemente con GSAP
-    gsap.to(this.heroSection.nativeElement, {
+    gsap.to('.hero-content', {
       opacity: 0,
       y: -20,
-      duration: 0.5,
+      duration: 0.4,
       ease: 'power2.in',
       onComplete: () => {
         this.mostrarCarta = true;
-        // Espera un instante para que Angular renderice la carta y la anima
-        setTimeout(() => {
-          gsap.fromTo(this.dossierCard.nativeElement,
-            { scale: 0.9, opacity: 0, rotationX: 15 },
-            { scale: 1, opacity: 1, rotationX: 0, duration: 0.8, ease: 'back.out(1.4)' }
-          );
-        }, 10);
+        // Forzamos a Angular a pintar la carta en el DOM inmediatamente
+        this.cdr.detectChanges();
+
+        gsap.fromTo(
+          '.dossier-paper',
+          { scale: 0.9, opacity: 0, y: 20 },
+          { scale: 1, opacity: 1, y: 0, duration: 0.7, ease: 'back.out(1.4)' }
+        );
       }
     });
   }
 
   empezarJuego(): void {
-    // Transición de salida hacia la Prueba 1 (Agnes Meyer Driscoll)
     gsap.to('.home-container', {
       opacity: 0,
-      duration: 0.6,
+      duration: 0.5,
       onComplete: () => {
-        this.router.navigate(['/prueba-1']);
+        this.router.navigate(['/mapa']);
       }
     });
   }

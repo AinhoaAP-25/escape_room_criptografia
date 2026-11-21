@@ -1,0 +1,210 @@
+.map-screen {
+  min-height: 100vh;
+  background-color: #0b0d0c;
+  color: #e8e6df;
+  font-family: 'Courier Prime', monospace;
+  padding: 1.5rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.map-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #2e2c26;
+  padding-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.tag {
+  color: #c5a059;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+}
+
+.map-header h1 {
+  font-family: 'Oswald', sans-serif;
+  margin: 0.3rem 0 0 0;
+  font-size: 2rem;
+  letter-spacing: 2px;
+  color: #ffffff;
+}
+
+.fragments-hud {
+  background: #161715;
+  border: 1px solid #c5a059;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+}
+
+.fragments-hud strong {
+  color: #c5a059;
+  margin-left: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.map-instruction {
+  color: #a3a8a5;
+  margin: 1rem 0 1.5rem 0;
+}
+
+/* Tablero táctico estilo mesa de estrategia oscura */
+.tactical-board {
+  position: relative;
+  flex: 1;
+  min-height: 520px;
+  background-color: #111412;
+  border: 2px solid #3d3a32;
+  box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.9);
+  background-image: 
+    linear-gradient(rgba(197, 160, 89, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(197, 160, 89, 0.06) 1px, transparent 1px),
+    radial-gradient(circle at 50% 50%, rgba(45, 65, 50, 0.15), transparent 70%);
+  background-size: 50px 50px, 50px 50px, 100% 100%;
+  overflow: hidden;
+}
+
+.route-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Nodos del recorrido */
+.map-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 5;
+}
+
+.node-marker {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Oswald', sans-serif;
+  font-weight: bold;
+  font-size: 1.1rem;
+  background: #1c1b18;
+  border: 2px solid #555;
+  color: #888;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+/* Estado ACTIVO (clicable y llamativo) */
+.map-node.activo {
+  cursor: pointer;
+}
+
+.map-node.activo .node-marker {
+  background: #c5a059;
+  border-color: #fff;
+  color: #0b0d0c;
+  box-shadow: 0 0 20px rgba(197, 160, 89, 0.8);
+}
+
+.map-node.activo:hover .node-marker {
+  transform: scale(1.15);
+}
+
+.pulse-ring {
+  position: absolute;
+  top: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid #c5a059;
+  animation: radarPulse 1.8s infinite ease-out;
+  pointer-events: none;
+}
+
+@keyframes radarPulse {
+  0% { transform: scale(1); opacity: 0.9; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* Estado COMPLETADO */
+.map-node.completado {
+  cursor: pointer;
+}
+
+.map-node.completado .node-marker {
+  background: #1b3b22;
+  border-color: #4caf50;
+  color: #81c784;
+}
+
+/* Estado BLOQUEADO */
+.map-node.bloqueado {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Etiqueta de información de cada punto */
+.node-card {
+  margin-top: 0.6rem;
+  background: rgba(18, 19, 17, 0.92);
+  border: 1px solid #3d3a32;
+  padding: 0.6rem 0.9rem;
+  text-align: center;
+  min-width: 190px;
+  pointer-events: none;
+}
+
+.map-node.activo .node-card {
+  border-color: #c5a059;
+}
+
+.node-status {
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  color: #c5a059;
+  margin-bottom: 0.2rem;
+}
+
+.map-node.completado .node-status {
+  color: #81c784;
+}
+
+.node-card h3 {
+  font-family: 'Oswald', sans-serif;
+  margin: 0;
+  font-size: 1rem;
+  color: #ffffff;
+}
+
+.node-card p {
+  margin: 0.2rem 0 0 0;
+  font-size: 0.75rem;
+  color: #a3a8a5;
+}
+
+.final-banner {
+  margin-top: 1.5rem;
+  text-align: center;
+  background: #161715;
+  border: 1px solid #c5a059;
+  padding: 1.5rem;
+}
+
+.btn-gold {
+  background-color: #c5a059;
+  color: #0b0d0c;
+  border: none;
+  padding: 0.9rem 2rem;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-top: 0.8rem;
+}
