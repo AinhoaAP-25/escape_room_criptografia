@@ -1,1 +1,55 @@
-<p>home works!</p>
+<main class="home-container">
+  <!-- Fondo atmosférico oscuro sin personas: cuadrícula táctica + viñeta -->
+  <div class="tactical-grid"></div>
+  <div class="vignette"></div>
+
+  <!-- FASE 1: Portada principal -->
+  <section #heroSection *ngIf="!mostrarCarta" class="hero-content">
+    <div class="classification-badge hero-element">ARCHIVO CLASIFICADO // NIVEL ULTRA</div>
+    
+    <h1 class="main-title hero-element">
+      ESCAPE ROOM<br>
+      <span>SEGUNDA GUERRA MUNDIAL</span>
+    </h1>
+    
+    <p class="subtitle hero-element">El secreto de las cinco criptógrafas</p>
+
+    <button class="btn-primary hero-element" (click)="abrirExpediente()">
+      COMENZAR
+    </button>
+  </section>
+
+  <!-- FASE 2: La Carta / Expediente de introducción -->
+  <section *ngIf="mostrarCarta" class="dossier-wrapper">
+    <article #dossierCard class="dossier-paper">
+      <div class="stamp">TOP SECRET</div>
+      
+      <header class="dossier-header">
+        <span class="dossier-code">EXPEDIENTE Nº 1940-BLETCHLEY</span>
+        <h2>EL MISTERIO DE LOS ARCHIVOS PERDIDOS</h2>
+      </header>
+
+      <div class="dossier-body">
+        <p>
+          Una organización de inteligencia ha recuperado <strong>cinco archivos históricos</strong> 
+          vinculados a algunas de las mujeres más importantes de la criptografía.
+        </p>
+        <p>
+          Sin embargo, cada documento está protegido mediante un sistema de cifrado diferente. 
+          Tu misión consiste en superar las cinco pruebas, recuperar los mensajes ocultos y 
+          conseguir los <strong>cinco fragmentos de una contraseña final</strong> para abrir el archivo secreto.
+        </p>
+        <div class="mission-brief">
+          <span>OBJETIVO:</span> Descifrar los códigos interceptados y reconstruir la verdad oculta.
+        </div>
+      </div>
+
+      <footer class="dossier-footer">
+        <p class="ready-text">¿Estás preparado?</p>
+        <button class="btn-action" (click)="empezarJuego()">
+          ADELANTE &rarr;
+        </button>
+      </footer>
+    </article>
+  </section>
+</main>
